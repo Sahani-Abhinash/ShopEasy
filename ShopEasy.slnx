@@ -10,5 +10,10 @@
   <Folder Name="/src/BuildingBlocks/">
     <Project Path="src/BuildingBlocks/ShopEasy.ServiceDefaults/ShopEasy.ServiceDefaults.csproj" />
   </Folder>
-  <Folder Name="/tests/" />
+  <Folder Name="/src/Catalog/">
+    <Project Path="src/Catalog/Catalog.Api/Catalog.Api.csproj" />
+  </Folder>
+  <Folder Name="/tests/">
+    <Project Path="tests/Catalog.Api.IntegrationTests/Catalog.Api.IntegrationTests.csproj" />
+  </Folder>
 </Solution>

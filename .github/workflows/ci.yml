@@ -37,7 +37,8 @@ jobs:
         run: dotnet build ShopEasy.slnx --configuration Release --no-restore
 
       - name: Test
-        run: dotnet test ShopEasy.slnx --configuration Release --no-build --logger trx --results-directory TestResults
+        # Microsoft.Testing.Platform mode (global.json); integration tests use Docker on the runner
+        run: dotnet test --solution ShopEasy.slnx --configuration Release --no-build --results-directory TestResults --report-xunit-trx
 
       - name: Upload test results
         if: always()

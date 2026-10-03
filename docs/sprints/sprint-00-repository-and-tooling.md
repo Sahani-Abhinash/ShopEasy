@@ -1,8 +1,8 @@
 # Sprint 0 — Repository and tooling
 
-**Status:** ◐ In progress
+**Status:** ☑ Done
 **Started:** 2026-10-03
-**Finished:** —
+**Finished:** 2026-10-03
 **Guide:** [Chapter 1](../architecture-guide/01-requirements-and-architecture.md) · **Backlog:** [Sprint 0](../planning/sprint-backlog.md#sprint-0--repository-and-tooling)
 
 **Goal:** an empty but well-structured repository with CI running on every PR.
@@ -15,7 +15,7 @@
 |---|---|---|---|
 | 1 | Install and verify tools | 👤 | ☑ Done (old Terraform/kubectl copies in PATH: cleanup optional) |
 | 2 | `git init` locally | 👤 | ☑ Done |
-| 3 | `.gitignore`, `.gitattributes` | 🤖 | ◐ Created; final check on `git add` (no `bin/`/`obj/` staged) |
+| 3 | `.gitignore`, `.gitattributes` | 🤖 | ☑ Done (`git ls-files` shows no `bin/`/`obj/`) |
 | 4 | Folder structure | 🤖 | ☑ Done |
 | 5 | Solution + `Directory.Build.props` + `Directory.Packages.props` | 🤖 | ☑ Done (build succeeded) |
 | 6 | `.editorconfig` + `dotnet format` check | 🤖 / 👤 | ☑ Done (`--verify-no-changes` clean) |
@@ -128,6 +128,14 @@
 
 **Next action:** 👤 commit the CI fix through a **pull request** (this also tests the PR trigger), then set up branch protection.
 
+### 2026-10-03 — PR #1 and sprint close (demo)
+
+**What we did:** created branch `chore/ci-runner-and-artifact`, opened **PR #1**, the `build-and-test` check passed, merged into `main` (commit `2d54978`), pulled locally. Verified that no `bin/` or `obj/` files are tracked.
+
+**What was missing:** the remote branch was not deleted after the merge (the "Delete branch" button is still shown).
+
+**Fix / next action:** 👤 click **Delete branch** on PR #1, and locally run `git branch -d chore/ci-runner-and-artifact`.
+
 ---
 
 ## 3. Issues and fixes
@@ -152,8 +160,12 @@
 
 ## 5. What I learned
 
-- _(fill in at the end of the sprint)_
+- _(your own notes; suggestions below)_
+- `.slnx`, `Directory.Build.props`, and central package management keep settings in one place for all services.
+- Windows searches the system PATH before the user PATH, so old tool copies can win over winget installs.
+- CI annotations matter: deprecated runtimes and moving `-latest` runner labels break pipelines later. Pin versions and upgrade on purpose.
+- GitHub Free: private repos are free, but branch rules are only enforced on public repos (or with Pro).
 
 ## 6. Sprint demo
 
-- [ ] A PR with a trivial change shows a green CI check and can be merged
+- [x] A PR with a trivial change shows a green CI check and can be merged (PR #1)

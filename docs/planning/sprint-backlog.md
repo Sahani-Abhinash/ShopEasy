@@ -16,8 +16,8 @@ How to use this file:
 
 | Sprint | Goal | Guide | Status |
 |---|---|---|---|
-| 0 | Repository and tooling | Ch. 1 | ◐ In progress — [log](../sprints/sprint-00-repository-and-tooling.md) |
-| 1 | Catalog service | Ch. 2 | ☐ Not started |
+| 0 | Repository and tooling | Ch. 1 | ☑ Done — [log](../sprints/sprint-00-repository-and-tooling.md) |
+| 1 | Catalog service | Ch. 2 | ◐ In progress — [log](../sprints/sprint-01-catalog-service.md) |
 | 2 | Orders service | Ch. 2 | ☐ Not started |
 | 3 | Docker and Compose | Ch. 3 | ☐ Not started |
 | 4 | Kafka, outbox, inbox | Ch. 4 | ☐ Not started |
@@ -40,7 +40,7 @@ Status values: ☐ Not started · ◐ In progress · ☑ Done
 
 - [x] 👤 Install tools: .NET 10 SDK, Node.js LTS, Docker Desktop (WSL 2), Git, VS Code/Visual Studio, Azure CLI, Terraform, kubectl, kind, Helm (verify with the version commands)
 - [x] 👤 `git init` locally
-- [ ] 🤖 `.gitignore` (dotnet + terraform + node), `.gitattributes`
+- [x] 🤖 `.gitignore` (dotnet + terraform + node), `.gitattributes`
 - [x] 🤖 Folder structure: `src/`, `tests/`, `deploy/`, `infrastructure/`, `docs/`
 - [x] 🤖 `ShopEasy.slnx`, `Directory.Build.props` (net10.0, nullable, warnings as errors), `Directory.Packages.props`
 - [x] 🤖 `.editorconfig`; 👤 run `dotnet format --verify-no-changes`
@@ -52,7 +52,7 @@ Status values: ☐ Not started · ◐ In progress · ☑ Done
 - [ ] 👤 Branch protection on `main`: PR required, CI must pass. **Deferred:** repo is private (not enforced on GitHub Free); follow the PR process by habit and enforce when the repo becomes public
 
 **Sprint demo**
-- [ ] A PR with a trivial change shows a green CI check and can be merged
+- [x] A PR with a trivial change shows a green CI check and can be merged
 
 ---
 
@@ -60,19 +60,23 @@ Status values: ☐ Not started · ◐ In progress · ☑ Done
 
 **Goal:** Catalog returns seeded products from PostgreSQL.
 
-- [ ] Create `Catalog.Api` (Minimal APIs)
-- [ ] `Product` entity, `CatalogDbContext`, Npgsql provider
-- [ ] Initial migration + seed data (keyboard, mouse, monitor)
-- [ ] `GET /api/v1/products` (with optional `?ids=` batch filter)
-- [ ] `GET /api/v1/products/{id}` → 200 / 404
-- [ ] Return `ProductDto`, not the entity
-- [ ] ServiceDefaults: ProblemDetails, health checks `/health/live` and `/health/ready`, OpenAPI in Development
-- [ ] Connection string via user-secrets (nothing in Git)
-- [ ] Integration tests with Testcontainers PostgreSQL
+- [x] 👤 Feature branch `feature/sprint-1-catalog`
+- [x] 👤 Local PostgreSQL in Docker (temporary; Compose comes in Sprint 3)
+- [x] 👤 Install the EF Core CLI (`dotnet tool install --global dotnet-ef`)
+- [x] 🤖 Create `Catalog.Api` (Minimal APIs) and add it to the solution
+- [x] 🤖 `Product` entity, `CatalogDbContext`, Npgsql provider, central package versions
+- [x] 🤖 ServiceDefaults: ProblemDetails, health checks `/health/live` and `/health/ready`, OpenAPI in Development
+- [x] 🤖 `GET /api/v1/products` (with optional `?ids=` batch filter)
+- [x] 🤖 `GET /api/v1/products/{id}` → 200 / 404
+- [x] 🤖 Return `ProductDto`, not the entity
+- [x] 🤖 Seed data (keyboard, mouse, monitor); 👤 generate the initial migration and update the database
+- [x] 👤 Connection string via user-secrets (nothing in Git)
+- [x] 🤖 Integration tests with Testcontainers PostgreSQL; 👤 run them
+- [ ] 👤 PR, green CI, merge
 
 **Sprint demo**
-- [ ] `GET /api/v1/products` returns the 3 seeded products
-- [ ] `/health/ready` fails when PostgreSQL is stopped and recovers when started
+- [x] `GET /api/v1/products` returns the 3 seeded products
+- [x] `/health/ready` fails when PostgreSQL is stopped and recovers when started
 
 ---
 
@@ -104,7 +108,7 @@ Status values: ☐ Not started · ◐ In progress · ☑ Done
 
 - [ ] `.dockerignore` at repo root
 - [ ] Multi-stage Dockerfile for Catalog and Orders (chiseled, non-root, port 8080)
-- [ ] `compose.yaml` with PostgreSQL (volume, healthcheck), Catalog, Orders
+- [ ] `compose.yaml` with PostgreSQL (volume, healthcheck), Catalog, Orders (PostgreSQL published on host port **5433**: 5432 is used by a Windows PostgreSQL service)
 - [ ] `deploy/local/init-databases.sql`: one database + user per service
 - [ ] `.env.example` committed, `.env` ignored
 - [ ] EF migration bundles + migrator services in Compose
