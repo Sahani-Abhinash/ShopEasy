@@ -1,0 +1,53 @@
+# ---------- .NET ----------
+bin/
+obj/
+*.user
+*.suo
+*.userprefs
+*.rsuser
+.vs/
+TestResults/
+*.trx
+coverage*.xml
+coverage*.json
+artifacts/
+efbundle
+efbundle.exe
+
+# ---------- IDEs / OS ----------
+.idea/
+.vscode/*
+!.vscode/extensions.json
+!.vscode/settings.json
+Thumbs.db
+.DS_Store
+
+# ---------- Secrets / local config ----------
+.env
+!.env.example
+secrets.json
+*.pfx
+*.pem
+appsettings.*.local.json
+
+# ---------- Node / Angular ----------
+node_modules/
+dist/
+.angular/
+npm-debug.log*
+
+# ---------- Terraform ----------
+.terraform/
+*.tfstate
+*.tfstate.*
+*.tfplan
+*.plan
+crash.log
+override.tf
+override.tf.json
+*_override.tf
+*_override.tf.json
+# .terraform.lock.hcl IS committed (pins provider versions)
+
+# ---------- Kubernetes / tools ----------
+kubeconfig*
