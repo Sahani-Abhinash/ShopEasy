@@ -15,7 +15,7 @@ concurrency:
 
 jobs:
   build-and-test:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04   # pinned: ubuntu-latest moves to Ubuntu 26 from 2026-10-19
     timeout-minutes: 15
 
     steps:
@@ -41,7 +41,7 @@ jobs:
 
       - name: Upload test results
         if: always()
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v5   # v4 runs on deprecated Node.js 20
         with:
           name: test-results
           path: TestResults

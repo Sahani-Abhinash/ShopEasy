@@ -47,9 +47,9 @@ Status values: ☐ Not started · ◐ In progress · ☑ Done
 - [x] 🤖 `src/BuildingBlocks/ShopEasy.ServiceDefaults` project (empty `AddServiceDefaults()` for now)
 - [x] 🤖 Root `README.md`: purpose, prerequisites, how to run
 - [x] 🤖 `docs/adr/` with ADR template and ADRs 0001–0003 from Chapter 1
-- [ ] 🤖 GitHub Actions `.github/workflows/ci.yml`: restore, build, test on PR
-- [ ] 👤 First commit; create the GitHub repository; add remote and push `main`
-- [ ] 👤 Branch protection on `main`: PR required, CI must pass
+- [x] 🤖 GitHub Actions `.github/workflows/ci.yml`: restore, build, test on PR
+- [x] 👤 First commit; create the GitHub repository; add remote and push `main`
+- [ ] 👤 Branch protection on `main`: PR required, CI must pass. **Deferred:** repo is private (not enforced on GitHub Free); follow the PR process by habit and enforce when the repo becomes public
 
 **Sprint demo**
 - [ ] A PR with a trivial change shows a green CI check and can be merged

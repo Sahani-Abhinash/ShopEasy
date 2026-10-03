@@ -22,9 +22,9 @@
 | 7 | `ShopEasy.ServiceDefaults` project | 🤖 | ☑ Done (builds with 0 warnings) |
 | 8 | Root `README.md` | 🤖 | ☑ Done |
 | 9 | ADR template + ADRs 0001–0003 | 🤖 | ☑ Done |
-| 10 | CI workflow `ci.yml` | 🤖 | ◐ Created; verified when it runs on GitHub |
-| 11 | First commit, GitHub repository, push | 👤 | ☐ |
-| 12 | Branch protection on `main` | 👤 | ☐ |
+| 10 | CI workflow `ci.yml` | 🤖 | ☑ Done (run #1 green; deprecation warnings fixed in follow-up) |
+| 11 | First commit, GitHub repository, push | 👤 | ☑ Done: `Sahani-Abhinash/ShopEasy` (private) |
+| 12 | Branch protection on `main` | 👤 | ◐ Deferred: process-only while private; enforce when made public |
 
 ---
 
@@ -115,6 +115,19 @@
 
 **Result:** `dotnet build` succeeded in 3.8 s with no warnings: restore, central package management, `global.json`, and the analyzers all work. `git status` is unchanged after the build. But git shows only the top-level `src/` folder, so whether `bin/` and `obj/` are ignored is confirmed at `git add` time, when every file is listed.
 
+### 2026-10-03 — First push and CI run (tasks 10–11)
+
+**What we did:** first commit, created the **private** repository `github.com/Sahani-Abhinash/ShopEasy`, pushed `main`. CI run #1 **succeeded in 27 s**: checkout, .NET setup from `global.json`, restore, format check, build, test, upload.
+
+**What was missing:** the run showed two annotations:
+
+| Annotation | Meaning | Fix |
+|---|---|---|
+| ⚠ `actions/upload-artifact@v4` targets deprecated Node.js 20 | The action will stop working when GitHub removes Node 20 | Upgraded to `@v5` |
+| ℹ `ubuntu-latest` moves to Ubuntu 26 from 2026-10-19 | The runner OS could change under us without notice | Pinned `runs-on: ubuntu-24.04`; upgrade on purpose later |
+
+**Next action:** 👤 commit the CI fix through a **pull request** (this also tests the PR trigger), then set up branch protection.
+
 ---
 
 ## 3. Issues and fixes
@@ -123,6 +136,7 @@
 |---|---|---|---|
 | 2026-10-03 | Terraform/kubectl/kind/Helm printed nothing in the first check | Output stopped after `az --version`. Terraform turned out to be installed, so it wasn’t (only) missing tools: `az` is a batch script (`az.cmd`), and pasting many commands at once can lose the lines after it | Run tool checks one per line, or `az` last. kubectl, Helm, kind were genuinely missing → installed with winget |
 | 2026-10-03 | Terraform shows 1.15.2 and kubectl 1.36.1 after installing 1.16.4 / 1.37.1 | Another copy of each appears earlier in PATH (kubectl is likely the one bundled with Docker Desktop) | `where.exe` showed: `C:\terraform\terraform.exe` (old manual install) and `C:\Program Files\Docker\Docker\resources\bin\kubectl.exe` (Docker Desktop) come before `WinGet\Links`. The **system** PATH is searched before the **user** PATH, where winget adds its links. Fix: delete `C:\terraform` and remove it from the system PATH. Keep Docker’s kubectl (one minor version older is supported, and Docker Desktop updates it) |
+| 2026-10-03 | CI warning: Node.js 20 deprecated (`upload-artifact@v4`); notice: `ubuntu-latest` → Ubuntu 26 | Action and runner image versions move on | `upload-artifact@v5`; runner pinned to `ubuntu-24.04` |
 
 ## 4. Decisions made in this sprint
 
@@ -133,6 +147,7 @@
 | Central package management | One place for all NuGet versions across services |
 | Warnings as errors + code style in build | Quality problems fail the build early, locally and in CI |
 | `global.json` pins the SDK | Same SDK locally and in CI |
+| Repository stays **private** for now; made public later | Branch rules aren’t enforced on private repos with GitHub Free. Until it’s public, the rule “every change goes through a PR with green CI; no direct pushes to `main`” is followed by discipline. When made public: set up the ruleset (PR required, `build-and-test` check required, no force push, no deletion) |
 | 👤/🤖 ownership rule | User does all tool and service configuration personally (learning goal); Claude writes repository files |
 
 ## 5. What I learned
