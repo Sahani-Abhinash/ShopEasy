@@ -41,7 +41,7 @@ docs/             architecture guide, ADRs, sprint backlog and logs
 ```bash
 dotnet restore ShopEasy.slnx
 dotnet build ShopEasy.slnx
-dotnet test ShopEasy.slnx
+dotnet test --solution ShopEasy.slnx   # needs Docker running (Testcontainers)
 dotnet format ShopEasy.slnx --verify-no-changes
 ```
 

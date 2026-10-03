@@ -1,0 +1,22 @@
+@baseUrl = http://localhost:5101
+
+### All products
+GET {{baseUrl}}/api/v1/products
+
+### Batch lookup (used by Orders in Sprint 2)
+GET {{baseUrl}}/api/v1/products?ids=b1f0c8a2-4c1e-4b7e-9a51-0f6d2c3a1001&ids=b1f0c8a2-4c1e-4b7e-9a51-0f6d2c3a1003
+
+### One product
+GET {{baseUrl}}/api/v1/products/b1f0c8a2-4c1e-4b7e-9a51-0f6d2c3a1001
+
+### Unknown product -> 404
+GET {{baseUrl}}/api/v1/products/00000000-0000-0000-0000-000000000000
+
+### Liveness
+GET {{baseUrl}}/health/live
+
+### Readiness (fails when PostgreSQL is down)
+GET {{baseUrl}}/health/ready
+
+### OpenAPI document (Development only)
+GET {{baseUrl}}/openapi/v1.json
