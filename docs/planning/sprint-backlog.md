@@ -97,12 +97,12 @@ Status values: ☐ Not started · ◐ In progress · ☑ Done
 - [x] 🤖 Unknown product → `422`; Catalog unavailable → `503` ProblemDetails
 - [x] 👤 User-secrets (`OrdersDb`), migration, database update
 - [x] 🤖 Integration tests: same key twice → one row; parallel identical requests → one order; fake Catalog; 👤 run them
-- [ ] 👤 Manual test with Catalog + Orders running (Scalar)
+- [x] 👤 Manual test with Catalog + Orders running (Scalar)
 - [ ] 👤 PR, green CI, merge
 
 **Sprint demo**
-- [ ] Order is saved with Catalog’s price even if the client sends a different price
-- [ ] Retrying with the same key returns the same order ID
+- [x] Order is saved with Catalog’s price even if the client sends a different price
+- [x] Retrying with the same key returns the same order ID
 
 ---
 

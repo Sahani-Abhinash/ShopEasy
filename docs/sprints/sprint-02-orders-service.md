@@ -24,7 +24,7 @@
 | 11 | 422 unknown product, 503 Catalog down | 🤖 | ☑ Done (tests pass) |
 | 12 | User-secrets, migration, database update | 👤 | ☑ Done (`20261004102012_InitialCreate`, `orders_db` on port 5433) |
 | 13 | Integration tests; run them | 🤖 / 👤 | ☑ Done (domain 10/10, integration 9/9 passed) |
-| 14 | Manual test with Catalog + Orders running | 👤 | ☐ |
+| 14 | Manual test with Catalog + Orders running | 👤 | ☑ Done (202, same id on retry, Catalog prices, 404 for other customer, 503 with Catalog down) |
 | 15 | PR, green CI, merge | 👤 | ☐ |
 
 ## 2. Work log
@@ -55,12 +55,29 @@
 
 **Next action:** 👤 GitHub auto-delete setting (task 1), manual test with Catalog + Orders (task 14), then PR (task 15).
 
+### 2026-10-04 — Manual test (task 14)
+
+**What we did:** ran Catalog (5101) and Orders (5102) in two terminals and called Orders with `Idempotency-Key: checkout-001`, 2 × Keyboard (sent `"price": 0.01`) + 1 × Monitor:
+
+| Check | Result |
+|---|---|
+| `POST` | `202 Accepted`, `Location: /api/v1/orders/01a10694-8a14-77c0-a8f9-59a41ce5f024`, status `Pending` |
+| Same `POST` again (same key) | Same `orderId` |
+| `GET` the order | Keyboard `unitPrice` **89.99** (client's 0.01 ignored), Monitor 349.00, total **528.98 EUR** |
+| `GET` as another customer (`X-Customer-Id`) | `404` |
+| `POST` while Catalog was stopped | `503` "Prices can't be checked right now. Please retry with the same Idempotency-Key." |
+
+**Next action:** 👤 GitHub auto-delete setting (task 1), `dotnet format --verify-no-changes`, then PR (task 15).
+
 ## 3. Issues and fixes
 
 | Date | Problem | Cause | Fix |
 |---|---|---|---|
 | 2026-10-04 | `git checkout main` refused: local changes would be overwritten | Sprint-close doc edits were uncommitted on `feature/sprint-1-catalog`, and `main` had different versions of the same files | Created the Sprint 2 branch directly from the current state (`git checkout -b`), which already included the merged `main` |
 | 2026-10-04 | `database update` → `Failed to connect to 127.0.0.1:5433` | Container `shopeasy-pg` had stopped (exit 255 after a Docker/PC restart) | `docker start shopeasy-pg` |
+| 2026-10-04 | Scalar on 5102 → `ERR_CONNECTION_REFUSED`; later `POST` → 503 | Only one service was running at a time (the second `dotnet run` was started in the same terminal) | Run Catalog and Orders in **two separate terminals** |
+| 2026-10-04 | `GET /api/v1/orders/{id}` → 404 during the manual test | A **product** id was used instead of the `orderId` returned by `POST` | Place the order first; GET with its `orderId` |
+| 2026-10-04 | `dotnet format --verify-no-changes` → 4 × IDE1006 "Missing prefix: '_'" | `private static readonly` fields (`Products`, `CustomerId`, `Now`, `FallbackCustomerId`) matched the private `_camelCase` rule | `.editorconfig`: rule for `static readonly` fields = PascalCase (like constants), listed before the private field rule |
 | 2026-10-04 | `database update` → `28P01: password authentication failed for user "..."` | The user-secret still had placeholder values `Username=...;Password=...` | Set the real secret with the same user/password as Catalog and port **5433** |
 
 ## 4. Decisions made in this sprint
@@ -85,5 +102,5 @@
 
 ## 6. Sprint demo
 
-- [ ] Order is saved with Catalog’s price even if the client sends a different price
-- [ ] Retrying with the same key returns the same order ID
+- [x] Order is saved with Catalog’s price even if the client sends a different price
+- [x] Retrying with the same key returns the same order ID
