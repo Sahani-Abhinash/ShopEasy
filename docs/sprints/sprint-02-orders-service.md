@@ -1,8 +1,8 @@
 # Sprint 2 — Orders service
 
-**Status:** ◐ In progress
+**Status:** ☑ Done
 **Started:** 2026-10-03
-**Finished:** —
+**Finished:** 2026-10-04
 **Guide:** [Chapter 2](../architecture-guide/02-aspnet-core-services-catalog-orders.md) (§3, §6–§9, §12) · **Backlog:** [Sprint 2](../planning/sprint-backlog.md#sprint-2--orders-service)
 
 **Goal:** Orders accepts an order with authoritative prices and safe retries.
@@ -25,7 +25,7 @@
 | 12 | User-secrets, migration, database update | 👤 | ☑ Done (`20261004102012_InitialCreate`, `orders_db` on port 5433) |
 | 13 | Integration tests; run them | 🤖 / 👤 | ☑ Done (domain 10/10, integration 9/9 passed) |
 | 14 | Manual test with Catalog + Orders running | 👤 | ☑ Done (202, same id on retry, Catalog prices, 404 for other customer, 503 with Catalog down) |
-| 15 | PR, green CI, merge | 👤 | ☐ |
+| 15 | PR, green CI, merge | 👤 | ☑ PR #3 merged (`0f1d605`); CI green |
 
 ## 2. Work log
 
@@ -68,6 +68,12 @@
 | `POST` while Catalog was stopped | `503` "Prices can't be checked right now. Please retry with the same Idempotency-Key." |
 
 **Next action:** 👤 GitHub auto-delete setting (task 1), `dotnet format --verify-no-changes`, then PR (task 15).
+
+### 2026-10-04 — PR #3 (task 15)
+
+**What we did:** `dotnet format --verify-no-changes` passed after the naming fix. Pushed `feature/sprint-2-orders` and opened **PR #3** (3 commits, 40 files, +1,662/−21). CI passed. Merged into `main` as `0f1d605`; local branch deleted, `feature/sprint-3-docker` created from `main`. This sprint-close log update goes into the Sprint 3 PR.
+
+**Open:** the remote branch was again not deleted automatically → enable *Settings → General → Pull Requests → "Automatically delete head branches"* (task 1).
 
 ## 3. Issues and fixes
 

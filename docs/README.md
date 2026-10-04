@@ -24,7 +24,8 @@ ShopEasy is a small ecommerce system for learning microservices on Azure, from d
 - [Sprint logs](sprints/) — per-sprint record of what we did, what was missing, and fixes
   - [Sprint 0 — Repository and tooling](sprints/sprint-00-repository-and-tooling.md) ☑
   - [Sprint 1 — Catalog service](sprints/sprint-01-catalog-service.md) ☑
-  - [Sprint 2 — Orders service](sprints/sprint-02-orders-service.md) ◐
+  - [Sprint 2 — Orders service](sprints/sprint-02-orders-service.md) ☑
+  - [Sprint 3 — Docker and Compose](sprints/sprint-03-docker-and-compose.md) ◐
 
 ## Requirements
 
