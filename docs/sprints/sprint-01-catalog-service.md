@@ -1,8 +1,8 @@
 # Sprint 1 — Catalog service
 
-**Status:** ◐ In progress
+**Status:** ☑ Done
 **Started:** 2026-10-03
-**Finished:** —
+**Finished:** 2026-10-03
 **Guide:** [Chapter 2](../architecture-guide/02-aspnet-core-services-catalog-orders.md) (§2, §5, §10) · **Backlog:** [Sprint 1](../planning/sprint-backlog.md#sprint-1--catalog-service)
 
 **Goal:** Catalog returns seeded products from PostgreSQL.
@@ -23,7 +23,7 @@
 | 10 | Seed data; generate the migration, update the database | 🤖 / 👤 | ☑ Done (`20261003150009_InitialCreate`, 3 products inserted) |
 | 11 | Connection string in user-secrets | 👤 | ☑ Done (port 5433) |
 | 12 | Integration tests (Testcontainers); run them | 🤖 / 👤 | ☑ Done (8/8 passed) |
-| 13 | PR, green CI, merge | 👤 | ☐ |
+| 13 | PR, green CI, merge | 👤 | ☑ PR #2 merged (`4378aea`); CI green (1 min, 8 tests in Docker on the runner) |
 
 ## 2. Work log
 
@@ -108,6 +108,14 @@ The container is shared by all tests (collection fixture) and is migrated once. 
 
 **Next action:** 👤 format check, commit, PR, green CI, merge (task 13).
 
+### 2026-10-03 — PR #2 (task 13)
+
+**What we did:** `dotnet format` flagged the constant naming (fixed in `.editorconfig`). Committed and pushed `feature/sprint-1-catalog` and opened **PR #2** (30 files, +916/−28). `CI / build-and-test` passed in 1 min: restore, format, build, and the 8 integration tests with Testcontainers on the GitHub runner.
+
+**Next action:** 👤 merge, delete branch, `git checkout main` + `git pull`. This sprint-close log update goes into the Sprint 2 PR.
+
+**Result:** merged into `main` as `4378aea`. The remote branch was again not deleted (same as PR #1). **Fix:** enable *Settings → General → Pull Requests → "Automatically delete head branches"* so GitHub deletes branches on merge.
+
 ## 3. Issues and fixes
 
 | Date | Problem | Cause | Fix |
@@ -132,7 +140,13 @@ The container is shared by all tests (collection fixture) and is migrated once. 
 
 ## 5. What I learned
 
--
+- _(your own notes; suggestions below)_
+- Port conflicts are easy to miss: `netstat -ano | findstr :5432` + `Get-Service *postgres*` found a Windows PostgreSQL hiding behind `localhost`.
+- EF Core migrations: `migrations add` creates code, `database update` creates the DB, tables, and seed data (`HasData`).
+- Liveness vs readiness in practice: DB down → ready 503, live 200.
+- .NET 10 testing: xUnit v3 runs on Microsoft.Testing.Platform, opted in through `global.json`.
+- Testcontainers gives real PostgreSQL in tests, locally and in CI, with no setup.
+- Warnings as errors + analyzers (CA1711, IDE1006) catch naming problems early; `dotnet format --verify-no-changes` before each commit.
 
 ## 6. Sprint demo
 

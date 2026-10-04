@@ -1,0 +1,9 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <!-- Domain: entities and business rules only. No EF Core, no HTTP, no JSON (Chapter 2, §3). -->
+
+  <ItemGroup>
+    <InternalsVisibleTo Include="Orders.Domain.Tests" />
+  </ItemGroup>
+
+</Project>
