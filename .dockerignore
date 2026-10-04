@@ -1,0 +1,18 @@
+# Build context is the repository root (Chapter 3, §4): keep it small, never send secrets
+**/bin/
+**/obj/
+**/.vs/
+**/*.user
+**/secrets.json
+**/TestResults/
+.git/
+.github/
+.vscode/
+.idea/
+.env
+docs/
+tests/
+deploy/
+infrastructure/
+efbundle
+efbundle.exe

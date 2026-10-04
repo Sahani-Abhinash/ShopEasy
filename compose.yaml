@@ -1,0 +1,82 @@
+# The whole system with one command (Chapter 3, §6):
+#   cp .env.example .env
+#   docker compose up -d --build
+name: shopeasy
+
+x-dotnet-env: &dotnet-env
+  ASPNETCORE_ENVIRONMENT: Development
+
+services:
+  postgres:
+    image: postgres:17
+    environment:
+      POSTGRES_USER: shopeasy
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:?set POSTGRES_PASSWORD in .env}
+      CATALOG_DB_PASSWORD: ${CATALOG_DB_PASSWORD:?set CATALOG_DB_PASSWORD in .env}
+      ORDERS_DB_PASSWORD: ${ORDERS_DB_PASSWORD:?set ORDERS_DB_PASSWORD in .env}
+    # Host port 5433: 5432 is used by a Windows PostgreSQL service (Sprint 1)
+    ports: ["5433:5432"]
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+      - ./deploy/local/init-databases.sh:/docker-entrypoint-initdb.d/init-databases.sh:ro
+    healthcheck:
+      # -h localhost: the temporary server during init listens only on the socket, so this waits for the init script
+      test: ["CMD-SHELL", "pg_isready -h localhost -U shopeasy -d postgres"]
+      interval: 5s
+      retries: 10
+
+  catalog-migrator:
+    build:
+      context: .
+      dockerfile: src/Catalog/Catalog.Api/Dockerfile
+      target: migrator
+    image: shopeasy/catalog-migrator:dev
+    environment:
+      <<: *dotnet-env
+      ConnectionStrings__CatalogDb: Host=postgres;Database=catalog_db;Username=catalog_user;Password=${CATALOG_DB_PASSWORD}
+    depends_on:
+      postgres: { condition: service_healthy }
+
+  catalog-api:
+    build:
+      context: .
+      dockerfile: src/Catalog/Catalog.Api/Dockerfile
+    image: shopeasy/catalog-api:dev
+    environment:
+      <<: *dotnet-env
+      ConnectionStrings__CatalogDb: Host=postgres;Database=catalog_db;Username=catalog_user;Password=${CATALOG_DB_PASSWORD}
+    ports: ["5101:8080"]
+    depends_on:
+      catalog-migrator: { condition: service_completed_successfully }
+
+  orders-migrator:
+    build:
+      context: .
+      dockerfile: src/Orders/Orders.Api/Dockerfile
+      target: migrator
+    image: shopeasy/orders-migrator:dev
+    environment:
+      <<: *dotnet-env
+      ConnectionStrings__OrdersDb: Host=postgres;Database=orders_db;Username=orders_user;Password=${ORDERS_DB_PASSWORD}
+      # Program.cs requires it at startup, also when the migration bundle builds the host
+      Services__Catalog: http://catalog-api:8080
+    depends_on:
+      postgres: { condition: service_healthy }
+
+  orders-api:
+    build:
+      context: .
+      dockerfile: src/Orders/Orders.Api/Dockerfile
+    image: shopeasy/orders-api:dev
+    environment:
+      <<: *dotnet-env
+      ConnectionStrings__OrdersDb: Host=postgres;Database=orders_db;Username=orders_user;Password=${ORDERS_DB_PASSWORD}
+      # Compose DNS: the service name is the host name
+      Services__Catalog: http://catalog-api:8080
+    ports: ["5102:8080"]
+    depends_on:
+      orders-migrator: { condition: service_completed_successfully }
+      catalog-api: { condition: service_started }
+
+volumes:
+  pgdata:

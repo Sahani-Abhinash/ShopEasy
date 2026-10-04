@@ -18,8 +18,8 @@ How to use this file:
 |---|---|---|---|
 | 0 | Repository and tooling | Ch. 1 | ☑ Done — [log](../sprints/sprint-00-repository-and-tooling.md) |
 | 1 | Catalog service | Ch. 2 | ☑ Done — [log](../sprints/sprint-01-catalog-service.md) |
-| 2 | Orders service | Ch. 2 | ◐ In progress — [log](../sprints/sprint-02-orders-service.md) |
-| 3 | Docker and Compose | Ch. 3 | ☐ Not started |
+| 2 | Orders service | Ch. 2 | ☑ Done — [log](../sprints/sprint-02-orders-service.md) |
+| 3 | Docker and Compose | Ch. 3 | ◐ In progress — [log](../sprints/sprint-03-docker-and-compose.md) |
 | 4 | Kafka, outbox, inbox | Ch. 4 | ☐ Not started |
 | 5 | Inventory and reservation | Ch. 5 | ☐ Not started |
 | 6 | Payments, Notifications, full saga | Ch. 5 | ☐ Not started |
@@ -98,7 +98,7 @@ Status values: ☐ Not started · ◐ In progress · ☑ Done
 - [x] 👤 User-secrets (`OrdersDb`), migration, database update
 - [x] 🤖 Integration tests: same key twice → one row; parallel identical requests → one order; fake Catalog; 👤 run them
 - [x] 👤 Manual test with Catalog + Orders running (Scalar)
-- [ ] 👤 PR, green CI, merge
+- [x] 👤 PR, green CI, merge
 
 **Sprint demo**
 - [x] Order is saved with Catalog’s price even if the client sends a different price
@@ -110,19 +110,19 @@ Status values: ☐ Not started · ◐ In progress · ☑ Done
 
 **Goal:** the whole system starts with one command.
 
-- [ ] `.dockerignore` at repo root
-- [ ] Multi-stage Dockerfile for Catalog and Orders (chiseled, non-root, port 8080)
-- [ ] `compose.yaml` with PostgreSQL (volume, healthcheck), Catalog, Orders (PostgreSQL published on host port **5433**: 5432 is used by a Windows PostgreSQL service)
-- [ ] `deploy/local/init-databases.sql`: one database + user per service
-- [ ] `.env.example` committed, `.env` ignored
-- [ ] EF migration bundles + migrator services in Compose
-- [ ] Orders reaches Catalog via `http://catalog-api:8080`
+- [x] `.dockerignore` at repo root
+- [x] Multi-stage Dockerfile for Catalog and Orders (chiseled, non-root, port 8080)
+- [x] `compose.yaml` with PostgreSQL (volume, healthcheck), Catalog, Orders (PostgreSQL published on host port **5433**: 5432 is used by a Windows PostgreSQL service)
+- [x] `deploy/local/init-databases.sh`: one database + user per service (`.sh` so passwords come from `.env`)
+- [x] `.env.example` committed, `.env` ignored
+- [x] EF migration bundles + migrator services in Compose
+- [x] Orders reaches Catalog via `http://catalog-api:8080`
 
 **Sprint demo**
-- [ ] `docker compose up -d --build` → place an order → `202`
-- [ ] Images ~110–130 MB and run as non-root
-- [ ] Data survives `down` / `up`
-- [ ] Changing one `.cs` file doesn’t re-run `dotnet restore`
+- [x] `docker compose up -d --build` → place an order → `202`
+- [x] Images ~110–130 MB and run as non-root
+- [x] Data survives `down` / `up`
+- [x] Changing one `.cs` file doesn’t re-run `dotnet restore`
 
 ---
 
