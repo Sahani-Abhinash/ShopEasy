@@ -85,18 +85,18 @@ Status values: ☐ Not started · ◐ In progress · ☑ Done
 **Goal:** Orders accepts an order with authoritative prices and safe retries.
 
 - [ ] 👤 Switch to `main`, pull, create branch `feature/sprint-2-orders`; enable auto-delete of merged branches on GitHub
-- [ ] 🤖 Projects: `Orders.Domain`, `Orders.Application`, `Orders.Infrastructure`, `Orders.Api` with correct references
-- [ ] 🤖 `Order` aggregate, `OrderItem`, `OrderStatus`, `DomainException`
-- [ ] 🤖 Domain rules: ≥1 item, positive quantity, no duplicate products, one currency
-- [ ] 🤖 Unit tests for domain rules (`Orders.Domain.Tests`)
-- [ ] 🤖 `ICatalogClient` port + `CatalogHttpClient` (typed client + `AddStandardResilienceHandler`)
-- [ ] 🤖 `PlaceOrderHandler` (idempotency check, prices from Catalog, unknown products)
-- [ ] 🤖 EF Core mapping: owned items, unique index on (`CustomerId`, `IdempotencyKey`), row version
-- [ ] 🤖 `POST /api/v1/orders` → `202 Accepted` + `Location`; `Idempotency-Key` required
-- [ ] 🤖 `GET /api/v1/orders/{id}` (only own orders; fixed dev customer for now)
-- [ ] 🤖 Unknown product → `422`; Catalog unavailable → `503` ProblemDetails
-- [ ] 👤 User-secrets (`OrdersDb`), migration, database update
-- [ ] 🤖 Integration tests: same key twice → one row; parallel identical requests → one order; fake Catalog; 👤 run them
+- [x] 🤖 Projects: `Orders.Domain`, `Orders.Application`, `Orders.Infrastructure`, `Orders.Api` with correct references
+- [x] 🤖 `Order` aggregate, `OrderItem`, `OrderStatus`, `DomainException`
+- [x] 🤖 Domain rules: ≥1 item, positive quantity, no duplicate products, one currency
+- [x] 🤖 Unit tests for domain rules (`Orders.Domain.Tests`)
+- [x] 🤖 `ICatalogClient` port + `CatalogHttpClient` (typed client + `AddStandardResilienceHandler`)
+- [x] 🤖 `PlaceOrderHandler` (idempotency check, prices from Catalog, unknown products)
+- [x] 🤖 EF Core mapping: owned items, unique index on (`CustomerId`, `IdempotencyKey`), row version
+- [x] 🤖 `POST /api/v1/orders` → `202 Accepted` + `Location`; `Idempotency-Key` required
+- [x] 🤖 `GET /api/v1/orders/{id}` (only own orders; fixed dev customer for now)
+- [x] 🤖 Unknown product → `422`; Catalog unavailable → `503` ProblemDetails
+- [x] 👤 User-secrets (`OrdersDb`), migration, database update
+- [x] 🤖 Integration tests: same key twice → one row; parallel identical requests → one order; fake Catalog; 👤 run them
 - [ ] 👤 Manual test with Catalog + Orders running (Scalar)
 - [ ] 👤 PR, green CI, merge
 
