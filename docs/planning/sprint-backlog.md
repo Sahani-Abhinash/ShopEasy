@@ -17,8 +17,8 @@ How to use this file:
 | Sprint | Goal | Guide | Status |
 |---|---|---|---|
 | 0 | Repository and tooling | Ch. 1 | ☑ Done — [log](../sprints/sprint-00-repository-and-tooling.md) |
-| 1 | Catalog service | Ch. 2 | ◐ In progress — [log](../sprints/sprint-01-catalog-service.md) |
-| 2 | Orders service | Ch. 2 | ☐ Not started |
+| 1 | Catalog service | Ch. 2 | ☑ Done — [log](../sprints/sprint-01-catalog-service.md) |
+| 2 | Orders service | Ch. 2 | ◐ In progress — [log](../sprints/sprint-02-orders-service.md) |
 | 3 | Docker and Compose | Ch. 3 | ☐ Not started |
 | 4 | Kafka, outbox, inbox | Ch. 4 | ☐ Not started |
 | 5 | Inventory and reservation | Ch. 5 | ☐ Not started |
@@ -72,7 +72,7 @@ Status values: ☐ Not started · ◐ In progress · ☑ Done
 - [x] 🤖 Seed data (keyboard, mouse, monitor); 👤 generate the initial migration and update the database
 - [x] 👤 Connection string via user-secrets (nothing in Git)
 - [x] 🤖 Integration tests with Testcontainers PostgreSQL; 👤 run them
-- [ ] 👤 PR, green CI, merge
+- [x] 👤 PR, green CI, merge
 
 **Sprint demo**
 - [x] `GET /api/v1/products` returns the 3 seeded products
@@ -84,17 +84,21 @@ Status values: ☐ Not started · ◐ In progress · ☑ Done
 
 **Goal:** Orders accepts an order with authoritative prices and safe retries.
 
-- [ ] Projects: `Orders.Domain`, `Orders.Application`, `Orders.Infrastructure`, `Orders.Api` with correct references
-- [ ] `Order` aggregate, `OrderItem`, `OrderStatus`, `DomainException`
-- [ ] Domain rules: ≥1 item, positive quantity
-- [ ] Unit tests for domain rules
-- [ ] `ICatalogClient` port + `CatalogHttpClient` (typed client + `AddStandardResilienceHandler`)
-- [ ] `PlaceOrderHandler` (idempotency check, prices from Catalog, unknown products)
-- [ ] EF Core mapping: owned items, unique index on `IdempotencyKey`, row version
-- [ ] `POST /api/v1/orders` → `202 Accepted` + `Location`; `Idempotency-Key` required
-- [ ] `GET /api/v1/orders/{id}` (only own orders; fixed dev customer for now)
-- [ ] Unknown product → `422` ProblemDetails
-- [ ] Integration test: same key twice → one row; two parallel identical requests → one order
+- [ ] 👤 Switch to `main`, pull, create branch `feature/sprint-2-orders`; enable auto-delete of merged branches on GitHub
+- [ ] 🤖 Projects: `Orders.Domain`, `Orders.Application`, `Orders.Infrastructure`, `Orders.Api` with correct references
+- [ ] 🤖 `Order` aggregate, `OrderItem`, `OrderStatus`, `DomainException`
+- [ ] 🤖 Domain rules: ≥1 item, positive quantity, no duplicate products, one currency
+- [ ] 🤖 Unit tests for domain rules (`Orders.Domain.Tests`)
+- [ ] 🤖 `ICatalogClient` port + `CatalogHttpClient` (typed client + `AddStandardResilienceHandler`)
+- [ ] 🤖 `PlaceOrderHandler` (idempotency check, prices from Catalog, unknown products)
+- [ ] 🤖 EF Core mapping: owned items, unique index on (`CustomerId`, `IdempotencyKey`), row version
+- [ ] 🤖 `POST /api/v1/orders` → `202 Accepted` + `Location`; `Idempotency-Key` required
+- [ ] 🤖 `GET /api/v1/orders/{id}` (only own orders; fixed dev customer for now)
+- [ ] 🤖 Unknown product → `422`; Catalog unavailable → `503` ProblemDetails
+- [ ] 👤 User-secrets (`OrdersDb`), migration, database update
+- [ ] 🤖 Integration tests: same key twice → one row; parallel identical requests → one order; fake Catalog; 👤 run them
+- [ ] 👤 Manual test with Catalog + Orders running (Scalar)
+- [ ] 👤 PR, green CI, merge
 
 **Sprint demo**
 - [ ] Order is saved with Catalog’s price even if the client sends a different price

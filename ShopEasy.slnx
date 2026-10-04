@@ -13,7 +13,15 @@
   <Folder Name="/src/Catalog/">
     <Project Path="src/Catalog/Catalog.Api/Catalog.Api.csproj" />
   </Folder>
+  <Folder Name="/src/Orders/">
+    <Project Path="src/Orders/Orders.Domain/Orders.Domain.csproj" />
+    <Project Path="src/Orders/Orders.Application/Orders.Application.csproj" />
+    <Project Path="src/Orders/Orders.Infrastructure/Orders.Infrastructure.csproj" />
+    <Project Path="src/Orders/Orders.Api/Orders.Api.csproj" />
+  </Folder>
   <Folder Name="/tests/">
     <Project Path="tests/Catalog.Api.IntegrationTests/Catalog.Api.IntegrationTests.csproj" />
+    <Project Path="tests/Orders.Domain.Tests/Orders.Domain.Tests.csproj" />
+    <Project Path="tests/Orders.Api.IntegrationTests/Orders.Api.IntegrationTests.csproj" />
   </Folder>
 </Solution>
